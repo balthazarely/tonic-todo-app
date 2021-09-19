@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles/global.css';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
-import { Todo } from './pages/Todo';
+import { MainTodo } from './pages/MainTodo';
 import { SingleTodo } from './pages/SingleTodo';
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
     <div className="App">
       <Router>
         <Switch>
-          <Route exact path="/repo/:author/:name" component={Todo} />
-          <Route exact path="/" component={SingleTodo} />
+          <Route exact path="/" component={MainTodo} />
+          <Route exact path="/:id" component={SingleTodo} />
         </Switch>
       </Router>
     </div>
