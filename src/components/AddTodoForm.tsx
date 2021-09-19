@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AddTodo } from '../models/types.d';
+import { HiPlus } from 'react-icons/hi';
 
 interface Props {
   addTodo: AddTodo;
@@ -14,12 +15,13 @@ export const AddTodoForm = ({ addTodo }: Props) => {
         className="border-gray-100 border-2 h-10  flex-1 p-2 focus:outline-none"
         type="text"
         value={newTodo}
+        placeholder="add a new todo"
         onChange={(e) => {
           setNewTodo(e.target.value);
         }}
       />
       <button
-        className="bg-blue-400 w-10 h-10 flex-3 flex justify-center items-center"
+        className="bg-blue-400 text-2xl w-10 h-10 flex-3 flex justify-center items-center text-white"
         type="submit"
         onClick={(e) => {
           e.preventDefault();
@@ -27,20 +29,7 @@ export const AddTodoForm = ({ addTodo }: Props) => {
           setNewTodo('');
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M12 4v16m8-8H4"
-          />
-        </svg>
+        <HiPlus />
       </button>
     </form>
   );

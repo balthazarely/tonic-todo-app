@@ -8,9 +8,13 @@ interface Props {
   editTodo: (todo: Todo) => void;
 }
 
+const todoWrapper = {
+  height: '525px',
+};
+
 export const TodoList = ({ todos, deleteTodo, editTodo }: Props) => {
   return (
-    <div>
+    <div style={todoWrapper} className=" overflow-auto ">
       {todos.map((todo: Todo, i) => (
         <div key={i}>
           <TodoListItem

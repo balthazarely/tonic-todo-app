@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Todo } from '../models/types.d';
+import { HiPencil, HiTrash, HiCheckCircle } from 'react-icons/hi';
 
 interface Props {
   todo: Todo;
@@ -10,14 +11,25 @@ interface Props {
 export const TodoListItem = ({ todo, deleteTodo, editTodo }: Props) => {
   const [showEditInput, setShowEditInput] = useState<boolean>(false);
   const [todoToEdit, setTodoToEdit] = useState<Todo>(todo);
+  const [showError, setShowError] = useState<boolean>(false);
 
-  const handleEditInputChange = (e: any) => {
+  const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodoToEdit({ ...todoToEdit, text: e.target.value });
   };
 
   const handleUpdateTodos = () => {
-    editTodo(todoToEdit);
-    setShowEditInput(false);
+    if (todoToEdit.text.length === 0) {
+      setShowError(true);
+    } else {
+      editTodo(todoToEdit);
+      setShowEditInput(false);
+      setShowError(false);
+    }
+  };
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleUpdateTodos();
+    }
   };
 
   return (
@@ -25,13 +37,26 @@ export const TodoListItem = ({ todo, deleteTodo, editTodo }: Props) => {
       {!showEditInput && <div>{todo.text}</div>}
       {showEditInput && (
         <>
-          <input
-            className="border-gray-100 border-2 h-8  flex-1 focus:outline-none"
-            type="text"
-            value={todoToEdit.text}
-            onChange={handleEditInputChange}
-          />
-          <button onClick={handleUpdateTodos}>save</button>
+          <div>
+            <input
+              className=" bg-gray-50 h-8  flex-1 focus:outline-none"
+              type="text"
+              value={todoToEdit.text}
+              onChange={handleEditInputChange}
+              onKeyDown={handleKeyDown}
+            />
+            {showError && (
+              <div className="text-red-500 text-xs">
+                Please enter an actual todo.
+              </div>
+            )}
+          </div>
+          <button
+            onClick={handleUpdateTodos}
+            className=" text-green-400 duration-300 mr-2 ml-2 text-2xl"
+          >
+            <HiCheckCircle />
+          </button>
         </>
       )}
       {!showEditInput && (
@@ -41,41 +66,15 @@ export const TodoListItem = ({ todo, deleteTodo, editTodo }: Props) => {
               setShowEditInput(true);
               setTodoToEdit({ ...todo });
             }}
-            className="group-hover:text-green-400 text-white duration-300 mr-2"
+            className="group-hover:text-green-400 text-2xl text-white duration-300 mr-2"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
+            <HiPencil />
           </button>
           <button
             onClick={() => deleteTodo(todo.id)}
-            className="group-hover:text-red-400 text-white duration-300 mr-2"
+            className="group-hover:text-red-400 text-white duration-300 mr-2 text-2xl"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
+            <HiTrash />
           </button>
         </div>
       )}
