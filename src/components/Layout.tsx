@@ -14,7 +14,6 @@ const todoWrapper = {
 
 export const Layout = ({ children }: Props) => {
   const location = useLocation();
-  console.log(location.pathname);
 
   return (
     <div className="bg-gradient-to-b from-blue-200  to-blue-400 h-screen w-100 flex justify-center items-start pt-10">

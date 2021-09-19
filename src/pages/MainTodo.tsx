@@ -6,6 +6,7 @@ import { AddTodo, Todo } from '../models/types.d';
 import { Layout } from '../components/Layout';
 
 export const MainTodo = () => {
+  const [error, setError] = useState<boolean>(false);
   const [todos, setTodos] = useState(() => {
     const todosFromLocalState = localStorage.getItem('todos');
     if (todosFromLocalState) {
@@ -20,9 +21,12 @@ export const MainTodo = () => {
   }, [todos]);
 
   const addTodo: AddTodo = (text: string) => {
-    if (text) {
+    if (text.length === 0) {
+      setError(true);
+    } else {
       const newTodo = { text, id: uuidv4() };
       setTodos([...todos, newTodo]);
+      setError(false);
     }
   };
 
@@ -43,6 +47,11 @@ export const MainTodo = () => {
   return (
     <Layout>
       <AddTodoForm addTodo={addTodo} />
+      <>
+        {error && (
+          <div className="text-red-500 text-xs">Please enter a valid todo</div>
+        )}
+      </>
       <TodoList todos={todos} deleteTodo={deleteTodo} editTodo={editTodo} />
     </Layout>
   );
